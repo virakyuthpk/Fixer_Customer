@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+
+    android:background="#fff"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="5dp"
+        android:background="#0A3D62"
+        android:layout_width="match_parent"
+        android:layout_height="80dp">
+
+        <TextView
+            android:id="@+id/txtclose"
+            android:layout_gravity="right"
+            android:textSize="20dp"
+            android:text="X"
+            android:gravity="center"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/cerclebackground"/>
+
+        <TextView
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:fontFamily="@font/odor"
+            android:text="ទម្រង់បំពេញប្រភេទបញ្ហា"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+
+        android:padding="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        
+        <TextView
+            android:textSize="18sp"
+            android:textColor="#000"
+            android:text="ប្រភេទយានយន្ត"
+            android:fontFamily="@font/odor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <RadioGroup
+            android:paddingLeft="20dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:fontFamily="@font/odor"
+                android:id="@+id/radio_car"
+                android:layout_marginRight="50dp"
+                android:text="ឡាន"
+                android:textSize="15sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <RadioButton
+                android:fontFamily="@font/odor"
+                android:id="@+id/radio_moto"
+                android:text="ម៉ូតូ"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RadioGroup>
+        <TextView
+            android:textColor="#000"
+            android:text="ប្រភេទបញ្ហារបស់យានយន្ត"
+            android:fontFamily="@font/odor"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/edtext_problem"
+            android:textDirection="rtl"
+            android:hint="បញ្ហាដែលជួបប្រទះ"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:textColor="#000"
+            android:text="លេខទូរសព្ទទំនាក់ទំនង"
+            android:fontFamily="@font/odor"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/edText_phoneNumber"
+            android:textDirection="rtl"
+            android:hint="លេខទូរសព្ទរបស់អ្នក"
+            android:fontFamily="@font/odor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        
+        <Button
+            android:onClick="ShowThankyouPopUp"
+            android:id="@+id/btn_request"
+            android:background="@drawable/buttonstyle"
+            android:textSize="15sp"
+            android:textColor="#fff"
+            android:fontFamily="@font/odor"
+            android:text="ដាក់ស្នើរ"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</LinearLayout>

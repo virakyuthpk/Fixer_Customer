@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:padding="27dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#707070"
+            android:text="ព័ត៌មានផ្ទាល់ខ្លួន"
+            android:textAlignment="center"
+            android:fontFamily="@font/odor"
+            android:textSize="32sp"/>
+        <TextView
+            android:layout_marginLeft="26dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ឈ្មោះ​អ្នកប្រើប្រាស់"
+            android:fontFamily="@font/odor"
+            android:textColor="#707070"
+            android:textSize="18sp"
+            />
+        <LinearLayout
+            android:padding="15dp"
+            android:orientation="horizontal"
+            android:gravity="start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:hint="ហ៊ាន ​ភារះ"
+                android:gravity="end" />
+            <TextView
+                android:id="@+id/tv_editname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ផ្លាស់ប្ដូរ"
+                android:layout_marginLeft="20dp"
+                android:fontFamily="@font/odor"
+                android:textColor="#3A9CFF"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_marginLeft="26dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/odor"
+            android:text="លេខទូរស័ព្ទ"
+            android:textColor="#707070"
+            android:textSize="18sp"
+            />
+        <LinearLayout
+            android:padding="15dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:hint="+855 85734339"
+                android:gravity="end" />
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:id="@+id/tv_editphone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ផ្លាស់ប្ដូរ"
+                android:fontFamily="@font/odor"
+                android:textColor="#3A9CFF"
+                android:textSize="18sp"
+                android:layout_marginRight="-50dp"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:layout_marginLeft="26dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/odor"
+            android:text="ថ្ងៃខែ​ឆ្នាំ​កំណើត"
+            android:textColor="#707070"
+            android:textSize="18sp"
+            />
+        <LinearLayout
+            android:padding="15dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:hint="05/02/1999"
+                android:gravity="end" />
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:id="@+id/tv_editdob"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ផ្លាស់ប្ដូរ"
+                android:fontFamily="@font/odor"
+                android:textColor="#3A9CFF"
+                android:textSize="18sp"
+                android:layout_marginRight="-50dp"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:layout_marginLeft="26dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/odor"
+            android:text="ពាក្យសម្ងាត់"
+            android:textColor="#707070"
+            android:textSize="18sp"
+            />
+        <LinearLayout
+            android:padding="15dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:hint="***************"
+                android:gravity="end" />
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:id="@+id/tv_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/odor"
+                android:text="ផ្លាស់ប្ដូរ"
+                android:textColor="#3A9CFF"
+                android:textSize="18sp"
+                android:layout_marginRight="-50dp"
+                />
+        </LinearLayout>
+        <Button
+            android:layout_gravity="center"
+            android:background="@drawable/buttonrequest"
+            android:layout_marginTop="20dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/odor"
+            android:text="រក្សាទុក"
+            android:textSize="25sp"
+            android:textColor="#FFFF"/>
+    </LinearLayout>
+
+
+</LinearLayout>

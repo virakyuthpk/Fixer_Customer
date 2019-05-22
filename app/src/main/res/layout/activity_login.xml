@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/bgColor"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="24dp"
+        android:paddingTop="90dp"
+        android:paddingRight="24dp">
+
+        <ImageView
+            android:layout_width="196.77dp"
+            android:layout_height="82.53dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="25dp"
+            android:src="@drawable/logo" />
+
+        <EditText
+            android:backgroundTint="@color/lineColor"
+            android:textColorHint="@color/textColorwhite"
+            android:id="@+id/txtNameOrPhone"
+            android:fontFamily="@font/odor"
+            android:hint="ឈ្មោះ ឬ​ លេខទូរស័ព្ទ"
+            android:textSize="20sp"
+            android:textColor="#fff"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
+        <EditText
+            android:textColor="#fff"
+            android:backgroundTint="@color/lineColor"
+            android:textColorHint="@color/textColorwhite"
+            android:id="@+id/txtPassword"
+            android:fontFamily="@font/odor"
+            android:hint="ពាក្យសម្ងាត់"
+            android:textSize="20sp"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            />
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp">
+
+            <Button
+                android:textColor="@color/textColorHint"
+                android:id="@+id/btn_login"
+                android:layout_width="110dp"
+                android:layout_height="39dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/buttoncorner"
+                android:fontFamily="@font/odor"
+                android:textSize="20sp"
+                android:text="ចូល" />
+
+        </LinearLayout>
+        <Button
+            android:id="@+id/btn_register"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:background="@null"
+            android:textColor="@color/textColorwhite"
+            android:fontFamily="@font/odor"
+            android:text="មិនមានគណនី? ចុះឈ្មោះ​ឥឡូវនេះ!"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

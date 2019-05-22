@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/colorBackground"
+    android:layout_width="match_parent"
+    android:layout_height="300dp">
+
+
+
+    <RelativeLayout
+        android:layout_width="130dp"
+        android:layout_height="130dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_image"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="5dp"
+            app:civ_border_width="1dp"
+            app:civ_border_color="#1B4F75"
+            android:src="@drawable/sai"
+            android:layout_width="230dp"
+            android:layout_height="230dp" />
+
+        <ImageView
+            android:id="@+id/img_uploadprofile"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/ic_camera"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/odor"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="សេរីវឌ្ឍនា"
+        android:textColor="#ffff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

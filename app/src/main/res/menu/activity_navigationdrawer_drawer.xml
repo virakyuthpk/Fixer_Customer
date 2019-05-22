@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/g1"
+        android:checkableBehavior="single"
+
+        >
+
+        <item
+
+            android:id="@+id/item_homepage"
+            android:icon="@drawable/house"
+            android:title="ទំព័រដើម">
+        </item>
+
+        <item
+            android:icon="@drawable/settings"
+            android:id="@+id/item_setting"
+            android:title="ការកំណត់"
+            >
+
+        </item>
+        <item
+            android:icon="@drawable/call"
+            android:id="@+id/item_callCenter"
+            android:title="សេវាទំនាក់ទំនង"
+            >
+
+        </item>
+        <item
+            android:icon="@drawable/feedback"
+            android:id="@+id/item_feedback"
+            android:title="មតិត្រឡប់"
+            >
+
+        </item>
+        <item
+            android:icon="@drawable/help"
+            android:id="@+id/item_helps"
+            android:title="ជំនួយ"
+            >
+
+        </item>
+        <item
+            android:icon="@drawable/logout"
+            android:id="@+id/item_logout"
+            android:title="ចាកចេញ"
+            >
+
+        </item>
+
+    </group>
+
+
+</menu>
