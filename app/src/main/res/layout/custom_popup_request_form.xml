@@ -56,11 +56,13 @@
             android:layout_height="wrap_content" />
 
         <RadioGroup
+            android:id="@+id/g_vehicle"
             android:paddingLeft="20dp"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <RadioButton
+                android:checked="true"
                 android:fontFamily="@font/odor"
                 android:id="@+id/radio_car"
                 android:layout_marginRight="50dp"

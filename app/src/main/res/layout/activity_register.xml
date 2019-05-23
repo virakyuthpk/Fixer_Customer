@@ -7,155 +7,152 @@
     android:layout_gravity="center"
     android:gravity="center">
 
-       <LinearLayout
-        android:layout_marginTop="16dp"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="vertical"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:orientation="vertical">
 
-           <LinearLayout
-               android:layout_width="331dp"
-               android:layout_height="653dp"
-               android:layout_gravity="center"
-               android:background="@drawable/frame"
-               android:orientation="vertical"
-               android:padding="10dp">
+        <LinearLayout
+            android:layout_width="331dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/frame"
+            android:orientation="vertical"
+            android:padding="10dp">
 
-               <LinearLayout
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:orientation="vertical"
-                   android:padding="20dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
 
-                   <TextView
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:layout_gravity="center"
-                       android:fontFamily="@font/odor"
-                       android:gravity="center"
-                       android:text="ទម្រង់ចុះឈ្មោះ"
-                       android:textColor="@color/textColorHint"
-                       android:textSize="35sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/odor"
+                    android:gravity="center"
+                    android:text="ទម្រង់ចុះឈ្មោះ"
+                    android:textColor="@color/textColorHint"
+                    android:textSize="35sp" />
 
-                   <EditText
-                       android:layout_marginTop="15dp"
-                       android:id="@+id/txt_Name"
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       android:backgroundTint="@color/lineColor"
-                       android:fontFamily="@font/odor"
-                       android:hint="ឈ្មោះ"
-                       android:padding="10dp"
-                       android:textColor="#fff"
-                       android:textColorHint="@color/textColorwhite"
-                       android:textSize="20sp" />
+                <EditText
+                    android:id="@+id/txt_Name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:backgroundTint="@color/lineColor"
+                    android:fontFamily="@font/odor"
+                    android:hint="ឈ្មោះ"
+                    android:padding="10dp"
+                    android:textColor="#fff"
+                    android:textColorHint="@color/textColorwhite"
+                    android:textSize="20sp" />
 
-                   <EditText
-                       android:layout_marginTop="10dp"
-                       android:id="@+id/txt_phone"
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       android:backgroundTint="@color/lineColor"
-                       android:fontFamily="@font/odor"
-                       android:hint="លេខទូរស័ព្ទ"
-                       android:inputType="phone"
-                       android:padding="10dp"
-                       android:textColor="#fff"
-                       android:textColorHint="@color/textColorwhite"
-                       android:textSize="20sp" />
+                <EditText
+                    android:id="@+id/txt_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="@color/lineColor"
+                    android:fontFamily="@font/odor"
+                    android:hint="លេខទូរស័ព្ទ"
+                    android:inputType="phone"
+                    android:padding="10dp"
+                    android:textColor="#fff"
+                    android:textColorHint="@color/textColorwhite"
+                    android:textSize="20sp" />
 
-                   <RadioGroup
-                       android:id="@+id/g_gender"
-                       xmlns:android="http://schemas.android.com/apk/res/android"
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       android:orientation="horizontal"
-                       android:layout_marginTop="10dp">
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/g_gender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
-                       <RadioButton
-                           android:id="@+id/radio_male"
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:buttonTint="@color/textColorwhite"
-                           android:fontFamily="@font/odor"
-                           android:onClick="onRadioButtonClicked"
-                           android:text="បុរស"
-                           android:textColor="@color/textColorwhite"
-                           android:textSize="20sp" />
+                    <RadioButton
+                        android:checked="true"
+                        android:id="@+id/radio_male"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/textColorwhite"
+                        android:fontFamily="@font/odor"
+                        android:text="ប្រុស"
+                        android:textColor="@color/textColorwhite"
+                        android:textSize="20sp" />
 
-                       <RadioButton
-                           android:id="@+id/radio_female"
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:layout_marginLeft="30dp"
-                           android:buttonTint="@color/textColorwhite"
-                           android:fontFamily="@font/odor"
-                           android:onClick="onRadioButtonClicked"
-                           android:text="ស្ត្រី"
-                           android:textColor="@color/textColorwhite"
-                           android:textSize="20sp" />
-                   </RadioGroup>
+                    <RadioButton
+                        android:id="@+id/radio_female"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="30dp"
+                        android:buttonTint="@color/textColorwhite"
+                        android:fontFamily="@font/odor"
+                        android:text="ស្រី"
+                        android:textColor="@color/textColorwhite"
+                        android:textSize="20sp" />
+                </RadioGroup>
 
-                   <EditText
-                       android:id="@+id/txt_birth"
-                       android:layout_width="match_parent"
-                       android:layout_height="60dp"
-                       android:layout_marginTop="10dp"
-                       android:height="10dp"
-                       android:backgroundTint="@color/lineColor"
-                       android:fontFamily="@font/odor"
-                       android:hint="ថ្ងៃខែ​ឆ្នាំ​កំណើត"
-                       android:clickable="true"
-                       android:editable="false"
-                       android:padding="10dp"
-                       android:textColor="#fff"
-                       android:textColorHint="@color/textColorwhite"
-                       android:textSize="20sp" />
+                <EditText
+                    android:id="@+id/txt_birth"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="10dp"
+                    android:height="10dp"
+                    android:backgroundTint="@color/lineColor"
+                    android:clickable="true"
+                    android:editable="false"
+                    android:fontFamily="@font/odor"
+                    android:hint="ថ្ងៃខែ​ឆ្នាំ​កំណើត"
+                    android:padding="10dp"
+                    android:textColor="#fff"
+                    android:textColorHint="@color/textColorwhite"
+                    android:textSize="20sp" />
 
-                   <EditText
-                       android:layout_marginTop="10dp"
-                       android:id="@+id/txt_password"
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       android:backgroundTint="@color/lineColor"
-                       android:fontFamily="@font/odor"
-                       android:hint="ពាក្យសម្ងាត់"
-                       android:inputType="textPassword"
-                       android:padding="10dp"
-                       android:textColor="#fff"
-                       android:textColorHint="@color/textColorwhite"
-                       android:textSize="20sp" />
+                <EditText
+                    android:id="@+id/txt_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="@color/lineColor"
+                    android:fontFamily="@font/odor"
+                    android:hint="ពាក្យសម្ងាត់"
+                    android:inputType="textPassword"
+                    android:padding="10dp"
+                    android:textColor="#fff"
+                    android:textColorHint="@color/textColorwhite"
+                    android:textSize="20sp" />
 
-                   <EditText
-                       android:layout_marginTop="10dp"
-                       android:id="@+id/txt_confirm_password"
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       android:backgroundTint="@color/lineColor"
-                       android:fontFamily="@font/odor"
-                       android:hint="បញ្ជាក់ពាក្យសម្ងាត់"
-                       android:inputType="textPassword"
-                       android:padding="10dp"
-                       android:textColor="#fff"
-                       android:textColorHint="@color/textColorwhite"
-                       android:textSize="20sp" />
+                <EditText
+                    android:id="@+id/txt_confirm_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="@color/lineColor"
+                    android:fontFamily="@font/odor"
+                    android:hint="បញ្ជាក់ពាក្យសម្ងាត់"
+                    android:inputType="textPassword"
+                    android:padding="10dp"
+                    android:textColor="#fff"
+                    android:textColorHint="@color/textColorwhite"
+                    android:textSize="20sp" />
 
-                   <Button
-                       android:id="@+id/btn_signup"
-                       android:layout_width="110dp"
-                       android:layout_height="39dp"
-                       android:layout_gravity="center_horizontal"
-                       android:layout_marginTop="40dp"
-                       android:layout_marginBottom="24dp"
-                       android:background="@drawable/buttoncorner"
-                       android:fontFamily="@font/odor"
-                       android:text="ចូល"
-                       android:textColor="@color/textColorHint"
-                       android:textSize="20sp" />
+                <Button
+                    android:id="@+id/btn_signup"
+                    android:layout_width="110dp"
+                    android:layout_height="39dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/buttoncorner"
+                    android:fontFamily="@font/odor"
+                    android:text="ចូល"
+                    android:textColor="@color/textColorHint"
+                    android:textSize="20sp" />
 
-               </LinearLayout>
-           </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

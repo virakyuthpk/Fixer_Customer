@@ -33,6 +33,7 @@
     </RelativeLayout>
 
     <TextView
+        android:id="@+id/tv_username"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/odor"
         android:textSize="20sp"

@@ -12,6 +12,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
@@ -25,6 +26,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -36,10 +38,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.fixer.model.CustomerModel;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
@@ -52,7 +63,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 
 public class NavigationDrawer_Activity extends AppCompatActivity
@@ -63,12 +80,19 @@ public class NavigationDrawer_Activity extends AppCompatActivity
 
     private static final int REQUEST_LOCATION = 1;
 
+    TextView tv_username;
+
     Dialog dialog;
     Marker marker;
+
     LocationManager locationManager;
     LocationListener locationListener;
 
+    CustomerModel customerModel_Nav;
+
     private String lattitude, longtitude;
+    public static String auth_id;
+    private String urlloaddata = "http://192.168.100.195:8000/api/customer/getall";
 
     ImageButton btn_current;
 
@@ -76,11 +100,19 @@ public class NavigationDrawer_Activity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigationdrawer);
+
+        getData(urlloaddata);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+
+        View headerView = navigationView.getHeaderView(0);
+
+        tv_username = headerView.findViewById(R.id.tv_username);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -151,11 +183,21 @@ public class NavigationDrawer_Activity extends AppCompatActivity
         };
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+
     }
 
     public void ShowRequestPopUp(View v) {
 
         TextView textClose;
+        RadioGroup r_vehicle;
+        EditText txt_problem, txt_phone;
+        Button btn_request;
+
+        btn_request = dialog.findViewById(R.id.btn_request);
+        txt_problem = dialog.findViewById(R.id.edtext_problem);
+        txt_phone = dialog.findViewById(R.id.edText_phoneNumber);
+        r_vehicle = dialog.findViewById(R.id.g_vehicle);
+
         dialog.setContentView(R.layout.custom_popup_request_form);
         textClose = dialog.findViewById(R.id.txtclose);
 
@@ -165,6 +207,14 @@ public class NavigationDrawer_Activity extends AppCompatActivity
                 dialog.dismiss();
             }
         });
+
+        btn_request.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                send_request(urlsendrequest);
+            }
+        });
+
         dialog.show();
     }
 
@@ -350,5 +400,81 @@ public class NavigationDrawer_Activity extends AppCompatActivity
     protected void onStop() {
         super.onStop();
         locationManager.removeUpdates(locationListener);
+    }
+
+    class JsonRequestData extends AsyncTask<String , Void, String> {
+
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            try {
+                JSONArray json = new JSONArray(s);
+                Log.d("Json Array :: ", json.toString());
+                for(int i = 0; i <json.length(); i++){
+                    JSONObject each = json.getJSONObject(i);
+                    CustomerModel customerModel = new CustomerModel(
+                            each.getString("id"),
+                            each.getString("name"),
+                            each.getString("dob"),
+                            each.getString("phone"),
+                            each.getString("password"),
+                            each.getString("gender"));
+
+                    if (auth_id.equals(customerModel.getId())) {
+                        customerModel_Nav = customerModel;
+
+                        tv_username.setText(customerModel_Nav.getName());
+                        break;
+                    }
+                }
+            }catch (Exception e){
+                Log.e("Json error : ",e.toString());
+            }
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String result = "";
+
+            try {
+                URL url = new URL(strings[0]);
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                con.setRequestMethod("GET");
+                con.connect();
+                if (con.getResponseCode() == 200) {
+                    InputStream is = con.getInputStream();
+                    while (true) {
+                        int data = is.read();
+                        if (data == -1)
+                            break;
+                        else
+                            result += (char) data;
+                    }
+                }
+                con.disconnect();
+            } catch (Exception ex) {
+                Log.e("Connection Fail : ", ex.toString());
+            }
+            return result;
+        }
+    }
+
+    private void getData(final String urlloaddata) {
+        final RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest request = new StringRequest(Request.Method.GET, urlloaddata, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+//                Log.e("All Data ::", response.toString());
+                new JsonRequestData().execute(urlloaddata);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Error ::", error.toString());
+            }
+        });
+        requestQueue.add(request);
     }
 }
