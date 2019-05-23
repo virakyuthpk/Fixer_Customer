@@ -40,7 +40,11 @@ import android.view.Menu;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+<<<<<<< HEAD
 import android.widget.RadioGroup;
+=======
+import android.widget.ImageView;
+>>>>>>> 80777298a9e5e258472c63756cf6caa42f589432
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -80,7 +84,13 @@ public class NavigationDrawer_Activity extends AppCompatActivity
 
     private static final int REQUEST_LOCATION = 1;
 
+<<<<<<< HEAD
     TextView tv_username;
+=======
+    NavigationView navigationView;
+    View viewHeader;
+    ImageView imgCamera;
+>>>>>>> 80777298a9e5e258472c63756cf6caa42f589432
 
     Dialog dialog;
     Marker marker;
@@ -105,6 +115,18 @@ public class NavigationDrawer_Activity extends AppCompatActivity
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        navigationView = (NavigationView)findViewById(R.id.nav_view);
+        viewHeader = navigationView.getHeaderView(0);
+
+        imgCamera= (ImageView) viewHeader.findViewById(R.id.img_uploadprofile);
+
+        imgCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toUploadProfilePhoto();
+            }
+        });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -402,6 +424,7 @@ public class NavigationDrawer_Activity extends AppCompatActivity
         locationManager.removeUpdates(locationListener);
     }
 
+<<<<<<< HEAD
     class JsonRequestData extends AsyncTask<String , Void, String> {
 
 
@@ -476,5 +499,13 @@ public class NavigationDrawer_Activity extends AppCompatActivity
             }
         });
         requestQueue.add(request);
+=======
+    public void toUploadProfilePhoto(){
+
+        Intent intent = new Intent(NavigationDrawer_Activity.this,ChangeProfilePhotoActivity.class);
+
+//        startActivity(intent);
+        startActivityForResult(intent,1);
+>>>>>>> 80777298a9e5e258472c63756cf6caa42f589432
     }
 }
