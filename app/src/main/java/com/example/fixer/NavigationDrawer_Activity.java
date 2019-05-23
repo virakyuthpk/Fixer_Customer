@@ -40,11 +40,11 @@ import android.view.Menu;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-<<<<<<< HEAD
+
 import android.widget.RadioGroup;
-=======
+
 import android.widget.ImageView;
->>>>>>> 80777298a9e5e258472c63756cf6caa42f589432
+
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -84,13 +84,13 @@ public class NavigationDrawer_Activity extends AppCompatActivity
 
     private static final int REQUEST_LOCATION = 1;
 
-<<<<<<< HEAD
+
     TextView tv_username;
-=======
+
     NavigationView navigationView;
     View viewHeader;
     ImageView imgCamera;
->>>>>>> 80777298a9e5e258472c63756cf6caa42f589432
+
 
     Dialog dialog;
     Marker marker;
@@ -116,10 +116,10 @@ public class NavigationDrawer_Activity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        navigationView = (NavigationView)findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         viewHeader = navigationView.getHeaderView(0);
 
-        imgCamera= (ImageView) viewHeader.findViewById(R.id.img_uploadprofile);
+        imgCamera = (ImageView) viewHeader.findViewById(R.id.img_uploadprofile);
 
         imgCamera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,16 +169,15 @@ public class NavigationDrawer_Activity extends AppCompatActivity
                 try {
                     List<Address> addresses =
                             geocoder.getFromLocation(latitude, longitude, 1);
-                    String result = addresses.get(0).getLocality()+":";
+                    String result = addresses.get(0).getLocality() + ":";
                     result += addresses.get(0).getCountryName();
                     LatLng latLng = new LatLng(latitude, longitude);
-                    if (marker != null){
+                    if (marker != null) {
                         marker.remove();
                         marker = mMap.addMarker(new MarkerOptions().position(latLng).title(result));
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                         marker.setVisible(false);
-                    }
-                    else{
+                    } else {
                         marker = mMap.addMarker(new MarkerOptions().position(latLng).title(result));
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                         marker.setVisible(false);
@@ -373,15 +372,14 @@ public class NavigationDrawer_Activity extends AppCompatActivity
                 ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
                         PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-        }
-        else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+        } else {
 
             Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
             Location location1 = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-            Location location2 = locationManager.getLastKnownLocation(LocationManager. PASSIVE_PROVIDER);
+            Location location2 = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
 
             if (location != null) {
                 double latti = location.getLatitude();
@@ -392,7 +390,7 @@ public class NavigationDrawer_Activity extends AppCompatActivity
 
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
 
-            } else  if (location1 != null) {
+            } else if (location1 != null) {
                 double latti = location1.getLatitude();
                 double longi = location1.getLongitude();
                 lattitude = String.valueOf(latti);
@@ -401,7 +399,7 @@ public class NavigationDrawer_Activity extends AppCompatActivity
 
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
 
-            } else  if (location2 != null) {
+            } else if (location2 != null) {
                 double latti = location2.getLatitude();
                 double longi = location2.getLongitude();
                 lattitude = String.valueOf(latti);
@@ -410,9 +408,9 @@ public class NavigationDrawer_Activity extends AppCompatActivity
 
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
 
-            }else{
+            } else {
 
-                Toast.makeText(this,"Unble to Trace your location", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Unble to Trace your location", Toast.LENGTH_SHORT).show();
 
             }
         }
@@ -424,8 +422,9 @@ public class NavigationDrawer_Activity extends AppCompatActivity
         locationManager.removeUpdates(locationListener);
     }
 
-<<<<<<< HEAD
-    class JsonRequestData extends AsyncTask<String , Void, String> {
+
+
+    class JsonRequestData extends AsyncTask<String, Void, String> {
 
 
         @Override
@@ -435,7 +434,7 @@ public class NavigationDrawer_Activity extends AppCompatActivity
             try {
                 JSONArray json = new JSONArray(s);
                 Log.d("Json Array :: ", json.toString());
-                for(int i = 0; i <json.length(); i++){
+                for (int i = 0; i < json.length(); i++) {
                     JSONObject each = json.getJSONObject(i);
                     CustomerModel customerModel = new CustomerModel(
                             each.getString("id"),
@@ -452,8 +451,8 @@ public class NavigationDrawer_Activity extends AppCompatActivity
                         break;
                     }
                 }
-            }catch (Exception e){
-                Log.e("Json error : ",e.toString());
+            } catch (Exception e) {
+                Log.e("Json error : ", e.toString());
             }
         }
 
@@ -499,13 +498,16 @@ public class NavigationDrawer_Activity extends AppCompatActivity
             }
         });
         requestQueue.add(request);
-=======
-    public void toUploadProfilePhoto(){
-
-        Intent intent = new Intent(NavigationDrawer_Activity.this,ChangeProfilePhotoActivity.class);
-
-//        startActivity(intent);
-        startActivityForResult(intent,1);
->>>>>>> 80777298a9e5e258472c63756cf6caa42f589432
     }
+
+        public void toUploadProfilePhoto(){
+
+            Intent intent = new Intent(NavigationDrawer_Activity.this, ChangeProfilePhotoActivity.class);
+
+
+            startActivityForResult(intent, 1);
+
+        }
+
+
 }
