@@ -37,6 +37,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,6 +64,10 @@ public class NavigationDrawer_Activity extends AppCompatActivity
 
     private static final int REQUEST_LOCATION = 1;
 
+    NavigationView navigationView;
+    View viewHeader;
+    ImageView imgCamera;
+
     Dialog dialog;
     Marker marker;
     LocationManager locationManager;
@@ -78,6 +83,18 @@ public class NavigationDrawer_Activity extends AppCompatActivity
         setContentView(R.layout.activity_navigationdrawer);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        navigationView = (NavigationView)findViewById(R.id.nav_view);
+        viewHeader = navigationView.getHeaderView(0);
+
+        imgCamera= (ImageView) viewHeader.findViewById(R.id.img_uploadprofile);
+
+        imgCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toUploadProfilePhoto();
+            }
+        });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -350,5 +367,13 @@ public class NavigationDrawer_Activity extends AppCompatActivity
     protected void onStop() {
         super.onStop();
         locationManager.removeUpdates(locationListener);
+    }
+
+    public void toUploadProfilePhoto(){
+
+        Intent intent = new Intent(NavigationDrawer_Activity.this,ChangeProfilePhotoActivity.class);
+
+//        startActivity(intent);
+        startActivityForResult(intent,1);
     }
 }
