@@ -37,7 +37,8 @@ public class RegisterActivity extends AppCompatActivity {
     private Button btn_signup;
     private RadioGroup r_gender;
     private DatePickerDialog.OnDateSetListener onDateSetListener;
-    private String url_register_customer = "http://192.168.100.195:8000/api/customer/register";
+
+    private String url_register_customer = LoginActivity.getRoot() + "/api/customer/register";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,11 +99,11 @@ public class RegisterActivity extends AppCompatActivity {
                 data.put("password", password);
                 data.put("gender", gender);
 
-                Log.e("Name :: ", name);
-                Log.e("Birthday :: ", birth);
-                Log.e("Phone :: ", phone);
-                Log.e("Password :: ", password);
-                Log.e("Gender :: ", gender);
+//                Log.e("Name :: ", name);
+//                Log.e("Birthday :: ", birth);
+//                Log.e("Phone :: ", phone);
+//                Log.e("Password :: ", password);
+//                Log.e("Gender :: ", gender);
 
                 registerCustomer(url_register_customer, data);
             }
@@ -141,7 +142,7 @@ public class RegisterActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.e("Save_Data", response.toString());
+//                        Log.e("Save_Data", response.toString());
 //                        Toast.makeText(getApplicationContext(), "Register Successful!", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(getApplicationContext(), NavigationDrawer_Activity.class);
                         startActivity(intent);
@@ -150,8 +151,11 @@ public class RegisterActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("Error_Volley",error.toString());
-                        Toast.makeText(getApplicationContext(), "Something Error, Sorry!", Toast.LENGTH_LONG).show();
+
+//                        Log.e("Error_Volley",error.toString());
+
+                        NavigationDrawer_Activity.auth_name = txt_name.getText().toString();
+//                        Toast.makeText(getApplicationContext(), "Please login again!", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(getApplicationContext(), NavigationDrawer_Activity.class);
                         startActivity(intent);
                     }

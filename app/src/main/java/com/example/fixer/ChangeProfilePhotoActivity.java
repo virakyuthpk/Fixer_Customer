@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -50,6 +51,7 @@ public class ChangeProfilePhotoActivity extends AppCompatActivity {
         imgInfo = (CircleImageView) findViewById(R.id.img_info);
 
 
+
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,9 +67,13 @@ public class ChangeProfilePhotoActivity extends AppCompatActivity {
         imgCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 capture();
-
+            }
+        });
+        btnOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toHome();
             }
         });
 
@@ -77,9 +83,13 @@ public class ChangeProfilePhotoActivity extends AppCompatActivity {
 
 
     private void toHome(){
+        imgInfo.buildDrawingCache();
+        Bitmap bitmap = imgInfo.getDrawingCache(); // your bitmap
+        ByteArrayOutputStream _bs = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 50, _bs);
+        intent.putExtra("byteArray", _bs.toByteArray());
 
         setResult(2,intent);
-
         finish();
 
     }
@@ -125,11 +135,12 @@ public class ChangeProfilePhotoActivity extends AppCompatActivity {
                     // Set the Image in ImageView after decoding the String
 
                     imgInfo.setImageURI(selectedImage);
+                    Log.e("img to string::", String.valueOf(imgInfo));
                     break;
 
                 case 200:
 
-                    Log.e("sad","error");
+
                     Bitmap bp = (Bitmap) data.getExtras().get("data");
                     imgInfo.setImageBitmap(bp);
 

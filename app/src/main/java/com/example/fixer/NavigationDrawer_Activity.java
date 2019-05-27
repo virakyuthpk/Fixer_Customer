@@ -7,15 +7,19 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
+import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -84,12 +88,12 @@ public class NavigationDrawer_Activity extends AppCompatActivity
 
     private static final int REQUEST_LOCATION = 1;
 
-
     TextView tv_username;
 
     NavigationView navigationView;
     View viewHeader;
     ImageView imgCamera;
+    ImageView imgProgile;
 
 
     Dialog dialog;
@@ -98,11 +102,17 @@ public class NavigationDrawer_Activity extends AppCompatActivity
     LocationManager locationManager;
     LocationListener locationListener;
 
-    CustomerModel customerModel_Nav;
+    private static CustomerModel customerModel_Nav;
+
+    public static CustomerModel getCustomerModel_Nav() {
+        return customerModel_Nav;
+    }
 
     private String lattitude, longtitude;
-    public static String auth_id;
-    private String urlloaddata = "http://192.168.100.195:8000/api/customer/getall";
+    public static String auth_id = "";
+    public static String auth_name = "";
+
+    private String urlloaddata = LoginActivity.getRoot() + "/api/customer/getall";
 
     ImageButton btn_current;
 
@@ -120,6 +130,7 @@ public class NavigationDrawer_Activity extends AppCompatActivity
         viewHeader = navigationView.getHeaderView(0);
 
         imgCamera = (ImageView) viewHeader.findViewById(R.id.img_uploadprofile);
+        imgProgile = (ImageView) viewHeader.findViewById(R.id.profile_image);
 
         imgCamera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,7 +186,7 @@ public class NavigationDrawer_Activity extends AppCompatActivity
                     if (marker != null) {
                         marker.remove();
                         marker = mMap.addMarker(new MarkerOptions().position(latLng).title(result));
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+//                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                         marker.setVisible(false);
                     } else {
                         marker = mMap.addMarker(new MarkerOptions().position(latLng).title(result));
@@ -229,12 +240,7 @@ public class NavigationDrawer_Activity extends AppCompatActivity
             }
         });
 
-        btn_request.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                send_request(urlsendrequest);
-            }
-        });
+
 
         dialog.show();
     }
@@ -290,6 +296,10 @@ public class NavigationDrawer_Activity extends AppCompatActivity
             manager.beginTransaction().replace(R.id.homepage, settingFragment)
                     .commit();
         } else if (id == R.id.item_callCenter) {
+            String number = "085734339";
+            Intent callIntent = new Intent(Intent.ACTION_CALL);
+            callIntent.setData(Uri.parse("tel:"+number));
+            startActivity(callIntent);
 
         } else if (id == R.id.item_feedback) {
             FeedbackFragment feedbackFragment = new FeedbackFragment();
@@ -302,6 +312,10 @@ public class NavigationDrawer_Activity extends AppCompatActivity
             manager.beginTransaction().replace(R.id.homepage, helpFragment)
                     .commit();
         } else if (id == R.id.item_logout) {
+
+            auth_id = "";
+            auth_name = "";
+
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             finish();
@@ -433,7 +447,7 @@ public class NavigationDrawer_Activity extends AppCompatActivity
 
             try {
                 JSONArray json = new JSONArray(s);
-                Log.d("Json Array :: ", json.toString());
+//                Log.d("Json Array :: ", json.toString());
                 for (int i = 0; i < json.length(); i++) {
                     JSONObject each = json.getJSONObject(i);
                     CustomerModel customerModel = new CustomerModel(
@@ -444,7 +458,13 @@ public class NavigationDrawer_Activity extends AppCompatActivity
                             each.getString("password"),
                             each.getString("gender"));
 
-                    if (auth_id.equals(customerModel.getId())) {
+                    Log.e("auth_id::", auth_id);
+//                    Log.e("LoginActivity.getRoot::", LoginActivity.getRoot());
+//                    Log.e("auth_name::", auth_name);
+//                     || auth_name.equals(customerModel.getName())
+//                    Log.e("customer_id", customerModel.getId());
+                    if (auth_id.equals(customerModel.getId()) || auth_name.equals(customerModel.getName())) {
+                        Log.e("customer_id", customerModel.getId());
                         customerModel_Nav = customerModel;
 
                         tv_username.setText(customerModel_Nav.getName());
@@ -509,5 +529,15 @@ public class NavigationDrawer_Activity extends AppCompatActivity
 
         }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(getIntent().hasExtra("byteArray")) {
+            ImageView _imv= new ImageView(this);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(getIntent().getByteArrayExtra("byteArray"),0,getIntent().getByteArrayExtra("byteArray").length);
+            imgProgile.setImageBitmap(bitmap);
+            Log.e("Sam","Mor bat");
+        }
 
+    }
 }

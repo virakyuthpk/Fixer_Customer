@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView
-            android:padding="27dp"
+            android:padding="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#707070"
@@ -34,9 +34,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText
+                android:editable="false"
+                android:id="@+id/edText_Name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="ហ៊ាន ​ភារះ"
+                android:paddingRight="15dp"
                 android:gravity="end" />
         </LinearLayout>
 
@@ -55,10 +57,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText
+                android:editable="false"
+                android:id="@+id/editPhone"
+                android:paddingRight="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="+855 85734339"
-                android:gravity="end" />
+                android:gravity="end"
+                 />
         </LinearLayout>
 
         <TextView
@@ -76,10 +81,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText
+                android:editable="false"
+                android:paddingRight="15dp"
+                android:id="@+id/editDob"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="05/02/1999"
-                android:gravity="end" />
+                android:gravity="end"
+                android:clickable="true"
+                 />
         </LinearLayout>
 
         <TextView
@@ -97,21 +106,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText
+                android:editable="false"
+                android:id="@+id/edText_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="***************"
-                android:gravity="end" />
+                android:paddingRight="15dp"
+                android:hint="********"
+                android:gravity="end"
+                />
         </LinearLayout>
         <Button
             android:layout_gravity="center"
             android:background="@drawable/buttonrequest"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
+            android:id="@+id/btn_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/odor"
-            android:text="រក្សាទុក"
+            android:text="ផ្លាស់ប្តូរ"
             android:textSize="25sp"
             android:textColor="#FFFF"/>
     </LinearLayout>

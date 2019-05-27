@@ -33,7 +33,13 @@ public class LoginActivity extends AppCompatActivity {
 
     private String index_customer;
 
-    private String urlloaddata = "http://192.168.100.195:8000/api/customer/getall";
+    private static String root = "http://192.168.15.1:8000";
+
+    public static String getRoot() {
+        return root;
+    }
+
+    private String urlloaddata = root + "/api/customer/getall";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,19 +131,19 @@ public class LoginActivity extends AppCompatActivity {
                         break;
                     }
                     else {
-                        Log.i("name from model", customerModel.getName());
-                        Log.i("phone from model", customerModel.getPhone());
-                        Log.i("Edit passWord", passWord);
-                        Log.i("Edit nameORphone", nameORphone);
+//                        Log.i("name from model", customerModel.getName());
+//                        Log.i("phone from model", customerModel.getPhone());
+//                        Log.i("Edit passWord", passWord);
+//                        Log.i("Edit nameORphone", nameORphone);
                         login_success = false;
                     }
-                    Log.e("Login_Success :: ", String.valueOf(login_success));
+//                    Log.e("Login_Success :: ", String.valueOf(login_success));
                 }
 
                 if (login_success == true) {
                     NavigationDrawer_Activity.auth_id = index_customer;
                     Intent intent = new Intent(getApplicationContext(),NavigationDrawer_Activity.class);
-                    Log.e("index_customer ::", index_customer);
+//                    Log.e("index_customer ::", index_customer);
                     startActivity(intent);
                     finish();
                 }
