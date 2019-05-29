@@ -31,6 +31,7 @@
             android:layout_height="wrap_content"
             android:text="@string/app_feedback"/>
         <EditText
+            android:id="@+id/edit_feedback"
             android:background="@drawable/borderfeedback"
             android:layout_width="match_parent"
             android:layout_height="200dp"
@@ -40,7 +41,7 @@
             android:gravity="clip_horizontal"
             android:textColor="#0A3D62"/>
         <Button
-            android:id="@+id/bt_sendfeedback"
+            android:id="@+id/btn_sendfeedback"
             android:layout_gravity="center"
             android:background="@drawable/buttonrequest"
             android:layout_marginTop="50dp"

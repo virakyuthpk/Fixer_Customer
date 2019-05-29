@@ -28,10 +28,13 @@
             android:hint="ឈ្មោះ ឬ​ លេខទូរស័ព្ទ"
             android:textSize="20sp"
             android:textColor="#fff"
+            android:singleLine="true"
             android:padding="10dp"
             android:layout_width="match_parent"
             android:layout_height="100dp" />
         <EditText
+            android:inputType="textPassword"
+            android:singleLine="true"
             android:textColor="#fff"
             android:backgroundTint="@color/lineColor"
             android:textColorHint="@color/textColorwhite"

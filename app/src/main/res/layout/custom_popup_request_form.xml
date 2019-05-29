@@ -56,11 +56,13 @@
             android:layout_height="wrap_content" />
 
         <RadioGroup
+            android:id="@+id/g_vehicle"
             android:paddingLeft="20dp"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <RadioButton
+                android:checked="true"
                 android:fontFamily="@font/odor"
                 android:id="@+id/radio_car"
                 android:layout_marginRight="50dp"
@@ -84,8 +86,8 @@
             android:layout_height="wrap_content" />
         <EditText
             android:id="@+id/edtext_problem"
-            android:textDirection="rtl"
             android:hint="បញ្ហាដែលជួបប្រទះ"
+            android:textSize="15sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -98,9 +100,9 @@
             android:layout_height="wrap_content" />
         <EditText
             android:id="@+id/edText_phoneNumber"
-            android:textDirection="rtl"
             android:hint="លេខទូរសព្ទរបស់អ្នក"
             android:fontFamily="@font/odor"
+            android:textSize="15sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         
