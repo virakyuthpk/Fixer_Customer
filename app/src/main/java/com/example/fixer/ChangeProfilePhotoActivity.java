@@ -1,5 +1,6 @@
 package com.example.fixer;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -10,17 +11,28 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Hashtable;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -33,7 +45,10 @@ public class ChangeProfilePhotoActivity extends AppCompatActivity {
     ImageView imgGallery;
     CircleImageView imgInfo;
 
-
+    private String KEY_IMAGE = "image";
+    private String KEY_NAME = "name";
+    private String UPLOAD_URL = LoginActivity.getRoot()+"/api/customer/changeprofilephoto";
+    Bitmap bitmaprofile;
 
 
 
@@ -56,6 +71,7 @@ public class ChangeProfilePhotoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 toHome();
+
             }
         });
         imgGallery.setOnClickListener(new View.OnClickListener() {
@@ -73,7 +89,8 @@ public class ChangeProfilePhotoActivity extends AppCompatActivity {
         btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toHome();
+                uploadImage();
+
             }
         });
 
@@ -114,17 +131,23 @@ public class ChangeProfilePhotoActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
+
         super.onActivityResult(requestCode, resultCode, data);
+
+        Bitmap bitmap;
         // Result code is RESULT_OK only if the user selects an Image
         if (resultCode == RESULT_OK)
+
             switch (requestCode){
+
                 case 100:
                     //data.getData returns the content URI for the selected Image
-                    Uri selectedImage = data.getData();
+                    Uri imageUri = data.getData();
+
 
                     String[] filePathColumn = { MediaStore.Images.Media.DATA };
                     // Get the cursor
-                    Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+                    Cursor cursor = getContentResolver().query(imageUri, filePathColumn, null, null, null);
                     // Move to first row
                     cursor.moveToFirst();
                     //Get the column index of MediaStore.Images.Media.DATA
@@ -133,22 +156,88 @@ public class ChangeProfilePhotoActivity extends AppCompatActivity {
                     String imgDecodableString = cursor.getString(columnIndex);
                     cursor.close();
                     // Set the Image in ImageView after decoding the String
+//
+//
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                        imgInfo.setImageBitmap(bitmap);
+                        bitmaprofile = bitmap;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
-                    imgInfo.setImageURI(selectedImage);
-                    Log.e("img to string::", String.valueOf(imgInfo));
+
                     break;
 
                 case 200:
 
 
-                    Bitmap bp = (Bitmap) data.getExtras().get("data");
-                    imgInfo.setImageBitmap(bp);
-
+                    bitmap = (Bitmap) data.getExtras().get("data");
+                    imgInfo.setImageBitmap(bitmap);
+                    bitmaprofile = bitmap;
                     break;
 
             }
 
 
+    }
+    public String getStringImage(Bitmap bmp) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] imageBytes = baos.toByteArray();
+        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        return encodedImage;
+    }
+
+    private void uploadImage() {
+        //Showing the progress dialog
+        final ProgressDialog loading = ProgressDialog.show(this,"Uploading...","Please wait...",false,false);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,UPLOAD_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        //Disimissing the progress dialog
+                        loading.dismiss();
+                        //Showing toast message of the response
+                        Toast.makeText(ChangeProfilePhotoActivity.this, KEY_IMAGE , Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        //Dismissing the progress dialog
+                        loading.dismiss();
+
+                        //Showing toast
+                        Toast.makeText(ChangeProfilePhotoActivity.this, volleyError.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                //Converting Bitmap to String
+                String image = getStringImage(bitmaprofile);
+
+
+                //Getting Image Name
+                String name = String.valueOf(imgInfo.getTag());
+
+                //Creating parameters
+                Map<String,String> params = new Hashtable<String, String>();
+
+                //Adding parameters
+                params.put(KEY_IMAGE, image);
+                params.put(KEY_NAME, name);
+
+                //returning parameters
+                return params;
+            }
+        };
+
+        //Creating a Request Queue
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        //Adding request to the queue
+        requestQueue.add(stringRequest);
     }
 
 

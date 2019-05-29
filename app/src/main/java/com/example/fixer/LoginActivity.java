@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private String index_customer;
 
-    private static String root = "http://192.168.15.1:8000";
+    private static String root = "http://192.168.100.93:8000";
 
     public static String getRoot() {
         return root;
