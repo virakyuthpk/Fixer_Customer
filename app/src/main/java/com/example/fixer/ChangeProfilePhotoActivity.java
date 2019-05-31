@@ -22,6 +22,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -70,6 +71,7 @@ public class ChangeProfilePhotoActivity extends AppCompatActivity {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                bitmaprofile=null;
                 toHome();
 
             }
@@ -134,7 +136,7 @@ public class ChangeProfilePhotoActivity extends AppCompatActivity {
 
         super.onActivityResult(requestCode, resultCode, data);
 
-        Bitmap bitmap;
+
         // Result code is RESULT_OK only if the user selects an Image
         if (resultCode == RESULT_OK)
 
@@ -159,9 +161,9 @@ public class ChangeProfilePhotoActivity extends AppCompatActivity {
 //
 //
                     try {
-                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                        imgInfo.setImageBitmap(bitmap);
-                        bitmaprofile = bitmap;
+                        bitmaprofile = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                        imgInfo.setImageBitmap(bitmaprofile);
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -172,9 +174,9 @@ public class ChangeProfilePhotoActivity extends AppCompatActivity {
                 case 200:
 
 
-                    bitmap = (Bitmap) data.getExtras().get("data");
-                    imgInfo.setImageBitmap(bitmap);
-                    bitmaprofile = bitmap;
+                    bitmaprofile = (Bitmap) data.getExtras().get("data");
+                    imgInfo.setImageBitmap(bitmaprofile);
+
                     break;
 
             }
@@ -219,7 +221,7 @@ public class ChangeProfilePhotoActivity extends AppCompatActivity {
 
 
                 //Getting Image Name
-                String name = String.valueOf(imgInfo.getTag());
+                String name = "chanthu";
 
                 //Creating parameters
                 Map<String,String> params = new Hashtable<String, String>();
@@ -238,7 +240,26 @@ public class ChangeProfilePhotoActivity extends AppCompatActivity {
 
         //Adding request to the queue
         requestQueue.add(stringRequest);
-    }
+
+        stringRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+
+
+}
 
 
 
