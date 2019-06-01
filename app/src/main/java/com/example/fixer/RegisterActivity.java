@@ -23,13 +23,20 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.fixer.model.CustomerModel;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.time.Year;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
+
+import static android.widget.Toast.LENGTH_SHORT;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -37,6 +44,8 @@ public class RegisterActivity extends AppCompatActivity {
     private Button btn_signup;
     private RadioGroup r_gender;
     private DatePickerDialog.OnDateSetListener onDateSetListener;
+
+    String name, phone, birth, gender, password, confirm_password;
 
     private String url_register_customer = LoginActivity.getRoot() + "/api/customer/register";
 
@@ -52,18 +61,17 @@ public class RegisterActivity extends AppCompatActivity {
         r_gender = findViewById(R.id.g_gender);
         txt_password = findViewById(R.id.txt_password);
         txt_confirm_password = findViewById(R.id.txt_confirm_password);
-        r_gender.check(0);
 
         btn_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String name = txt_name.getText().toString();
-                String phone = txt_phone.getText().toString();
-                String birth = txt_birth.getText().toString();
-                String gender = ((RadioButton)findViewById(r_gender.getCheckedRadioButtonId())).getText().toString();
-                String password = txt_password.getText().toString();
-                String confirm_password = txt_confirm_password.getText().toString();
+                name = txt_name.getText().toString();
+                phone = txt_phone.getText().toString();
+                birth = txt_birth.getText().toString();
+                gender = ((RadioButton)findViewById(r_gender.getCheckedRadioButtonId())).getText().toString();
+                password = txt_password.getText().toString();
+                confirm_password = txt_confirm_password.getText().toString();
 
                 if (TextUtils.isEmpty(name)) {
                     txt_name.setError("សូមបញ្ចូលឈ្មោះរបស់អ្នក!");
@@ -90,22 +98,8 @@ public class RegisterActivity extends AppCompatActivity {
                     txt_confirm_password.requestFocus();
                     return;
                 }
-//                Log.e("Save_Data", txt_birth.getText().toString());
 
-                HashMap data = new HashMap();
-                data.put("name", name);
-                data.put("dob", birth);
-                data.put("phone", phone);
-                data.put("password", password);
-                data.put("gender", gender);
-
-//                Log.e("Name :: ", name);
-//                Log.e("Birthday :: ", birth);
-//                Log.e("Phone :: ", phone);
-//                Log.e("Password :: ", password);
-//                Log.e("Gender :: ", gender);
-
-                registerCustomer(url_register_customer, data);
+                registerCustomer(url_register_customer);
             }
         });
 
@@ -135,33 +129,54 @@ public class RegisterActivity extends AppCompatActivity {
         };
     }
 
-    private void registerCustomer(String url_register_customer, HashMap data) {
+    protected void registerCustomer(String url)
+    {
         RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());
-
-        JsonObjectRequest request= new JsonObjectRequest(Request.Method.POST, url_register_customer, new JSONObject(data),
-                new Response.Listener<JSONObject>() {
+        StringRequest eventoReq = new StringRequest(Request.Method.POST,url,
+                new Response.Listener<String>() {
                     @Override
-                    public void onResponse(JSONObject response) {
-//                        Log.e("Save_Data", response.toString());
-//                        Toast.makeText(getApplicationContext(), "Register Successful!", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(getApplicationContext(), NavigationDrawer_Activity.class);
-                        startActivity(intent);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
+                    public void onResponse(String response) {
 
-//                        Log.e("Error_Volley",error.toString());
+                        try {
+                            JSONArray json = new JSONArray(response);
+                            JSONObject auth_user = json.getJSONObject(0);
+                            LoginActivity.customerModel = new CustomerModel(
+                                    auth_user.getString("id"),
+                                    auth_user.getString("name"),
+                                    auth_user.getString("dob"),
+                                    auth_user.getString("phone"),
+                                    auth_user.getString("password"),
+                                    auth_user.getString("gender"));
 
-                        NavigationDrawer_Activity.auth_name = txt_name.getText().toString();
-//                        Toast.makeText(getApplicationContext(), "Please login again!", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(getApplicationContext(), NavigationDrawer_Activity.class);
-                        startActivity(intent);
+                            Intent intent = new Intent(getApplicationContext(), NavigationDrawer_Activity.class);
+                            startActivity(intent);
+                            finish();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getApplicationContext(), "Sorry this username is already existed!", Toast.LENGTH_LONG).show();
+                        }
                     }
-                }
-        );
-        requestQueue.add(request);
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Error::", String.valueOf(error));
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting parameters to login url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("name", name);
+                params.put("dob", birth);
+                params.put("phone", phone);
+                params.put("password", password);
+                params.put("gender", gender);
+
+                return params;
+            }
+        };
+        requestQueue.add(eventoReq);
     }
 
 }

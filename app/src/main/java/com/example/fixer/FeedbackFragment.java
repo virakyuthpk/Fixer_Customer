@@ -40,8 +40,6 @@ public class FeedbackFragment extends Fragment {
         editText_feedback = (EditText) v.findViewById(R.id.edit_feedback);
         button_sendfeedback = (Button) v.findViewById(R.id.btn_sendfeedback);
 
-        final CustomerModel auth_user = NavigationDrawer_Activity.getCustomerModel_Nav();
-
         button_sendfeedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,12 +53,9 @@ public class FeedbackFragment extends Fragment {
                 }
 
                 HashMap data = new HashMap();
-                data.put("customer_id", auth_user.getId());
+                data.put("customer_id", LoginActivity.getCustomerModel().getId());
                 data.put("text_feedback", feedback_str);
                 data.put("fixer_id", null);
-
-//                Log.e("customer_id::", auth_user.getId());
-//                Log.e("Text Feedback::", feedback_str);
 
                 sendFeedback(url_sendFeedback_customer, data);
             }
@@ -80,11 +75,14 @@ public class FeedbackFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
                         Toast.makeText(getContext(), "Update Successful!", Toast.LENGTH_LONG).show();
+                        editText_feedback.setText("");
+                        editText_feedback.setHint("បញ្ចេញមតិយោបល់");
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        Log.e("error::", error.toString());
                         Toast.makeText(getContext(), "Update Error!", Toast.LENGTH_LONG).show();
                     }
                 }

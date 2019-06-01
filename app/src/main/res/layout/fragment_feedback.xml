@@ -35,7 +35,7 @@
             android:background="@drawable/borderfeedback"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:padding="5dp"
+            android:padding="15dp"
             android:hint="បញ្ចេញមតិយោបល់"
             android:fontFamily="@font/odor"
             android:gravity="clip_horizontal"

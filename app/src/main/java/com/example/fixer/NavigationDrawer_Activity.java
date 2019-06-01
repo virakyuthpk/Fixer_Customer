@@ -30,6 +30,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
@@ -45,6 +46,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import android.widget.ImageView;
@@ -78,6 +80,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
 
 public class NavigationDrawer_Activity extends AppCompatActivity
@@ -95,33 +98,22 @@ public class NavigationDrawer_Activity extends AppCompatActivity
     ImageView imgCamera;
     ImageView imgProgile;
 
-
     Dialog dialog;
     Marker marker;
 
     LocationManager locationManager;
     LocationListener locationListener;
 
-    private static CustomerModel customerModel_Nav;
-
-    public static CustomerModel getCustomerModel_Nav() {
-        return customerModel_Nav;
-    }
-
     private String lattitude, longtitude;
-    public static String auth_id = "";
-    public static String auth_name = "";
-
-    private String urlloaddata = LoginActivity.getRoot() + "/api/customer/getall";
+    String problem_str, phone_str, vehicle_str;
 
     ImageButton btn_current;
+    private String url_sendRequest_customer = LoginActivity.getRoot() + "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigationdrawer);
-
-        getData(urlloaddata);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -145,6 +137,7 @@ public class NavigationDrawer_Activity extends AppCompatActivity
         View headerView = navigationView.getHeaderView(0);
 
         tv_username = headerView.findViewById(R.id.tv_username);
+        tv_username.setText(LoginActivity.getCustomerModel().getName());
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -222,13 +215,38 @@ public class NavigationDrawer_Activity extends AppCompatActivity
 
         TextView textClose;
         RadioGroup r_vehicle;
-        EditText txt_problem, txt_phone;
+        final EditText txt_problem, txt_phone;
         Button btn_request;
 
         btn_request = dialog.findViewById(R.id.btn_request);
         txt_problem = dialog.findViewById(R.id.edtext_problem);
         txt_phone = dialog.findViewById(R.id.edText_phoneNumber);
         r_vehicle = dialog.findViewById(R.id.g_vehicle);
+//
+//        problem_str = txt_problem.getText().toString();
+//        phone_str = txt_phone.getText().toString();
+//        vehicle_str = ((RadioButton) dialog.findViewById(r_vehicle.getCheckedRadioButtonId())).getText().toString();
+//
+////        btn_request.setOnClickListener(new View.OnClickListener() {
+////            @Override
+////            public void onClick(View v) {
+////                if (TextUtils.isEmpty(problem_str)) {
+////                    txt_problem.setError("សូមបញ្ចូលបញ្ហារបស់អ្នក!");
+////                    txt_problem.requestFocus();
+////                    return;
+////                }
+////                if (TextUtils.isEmpty(phone_str)) {
+////                    txt_phone.setError("ប្រសិនបើអ្នកមិនបញ្ចូលអ្វីទេលេខទូរស័ព្ទរបស់អ្នកនឹងជាលេខទូរស័ព្ទដែលអ្នកបានចុះឈ្មោះ!");
+////                    txt_phone.requestFocus();
+////                }
+//////                HashMap data = new HashMap();
+//////                data.put("problem", problem_str);
+//////                data.put("phone", phone_str);
+//////                data.put("vehicle", vehicle_str);
+//////
+//////                sendRequest(url_sendRequest_customer, data);
+////            }
+////        });
 
         dialog.setContentView(R.layout.custom_popup_request_form);
         textClose = dialog.findViewById(R.id.txtclose);
@@ -239,8 +257,6 @@ public class NavigationDrawer_Activity extends AppCompatActivity
                 dialog.dismiss();
             }
         });
-
-
 
         dialog.show();
     }
@@ -296,11 +312,10 @@ public class NavigationDrawer_Activity extends AppCompatActivity
             manager.beginTransaction().replace(R.id.homepage, settingFragment)
                     .commit();
         } else if (id == R.id.item_callCenter) {
-            String number = "085734339";
-            Intent callIntent = new Intent(Intent.ACTION_CALL);
-            callIntent.setData(Uri.parse("tel:"+number));
-            startActivity(callIntent);
-
+//            String number = "085734339";
+//            Intent callIntent = new Intent(Intent.ACTION_CALL);
+//            callIntent.setData(Uri.parse("tel:"+number));
+//            startActivity(callIntent);
         } else if (id == R.id.item_feedback) {
             FeedbackFragment feedbackFragment = new FeedbackFragment();
             FragmentManager manager = getSupportFragmentManager();
@@ -312,9 +327,6 @@ public class NavigationDrawer_Activity extends AppCompatActivity
             manager.beginTransaction().replace(R.id.homepage, helpFragment)
                     .commit();
         } else if (id == R.id.item_logout) {
-
-            auth_id = "";
-            auth_name = "";
 
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
@@ -387,7 +399,8 @@ public class NavigationDrawer_Activity extends AppCompatActivity
                         PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-        } else {
+        }
+        else {
 
             Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
@@ -404,7 +417,8 @@ public class NavigationDrawer_Activity extends AppCompatActivity
 
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
 
-            } else if (location1 != null) {
+            }
+            else if (location1 != null) {
                 double latti = location1.getLatitude();
                 double longi = location1.getLongitude();
                 lattitude = String.valueOf(latti);
@@ -413,7 +427,8 @@ public class NavigationDrawer_Activity extends AppCompatActivity
 
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
 
-            } else if (location2 != null) {
+            }
+            else if (location2 != null) {
                 double latti = location2.getLatitude();
                 double longi = location2.getLongitude();
                 lattitude = String.valueOf(latti);
@@ -422,10 +437,9 @@ public class NavigationDrawer_Activity extends AppCompatActivity
 
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
 
-            } else {
-
+            }
+            else {
                 Toast.makeText(this, "Unble to Trace your location", Toast.LENGTH_SHORT).show();
-
             }
         }
     }
@@ -436,98 +450,14 @@ public class NavigationDrawer_Activity extends AppCompatActivity
         locationManager.removeUpdates(locationListener);
     }
 
+    public void toUploadProfilePhoto(){
+
+        Intent intent = new Intent(NavigationDrawer_Activity.this, ChangeProfilePhotoActivity.class);
 
 
-    class JsonRequestData extends AsyncTask<String, Void, String> {
+        startActivityForResult(intent, 1);
 
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-
-            try {
-                JSONArray json = new JSONArray(s);
-//                Log.d("Json Array :: ", json.toString());
-                for (int i = 0; i < json.length(); i++) {
-                    JSONObject each = json.getJSONObject(i);
-                    CustomerModel customerModel = new CustomerModel(
-                            each.getString("id"),
-                            each.getString("name"),
-                            each.getString("dob"),
-                            each.getString("phone"),
-                            each.getString("password"),
-                            each.getString("gender"));
-
-                    Log.e("auth_id::", auth_id);
-//                    Log.e("LoginActivity.getRoot::", LoginActivity.getRoot());
-//                    Log.e("auth_name::", auth_name);
-//                     || auth_name.equals(customerModel.getName())
-//                    Log.e("customer_id", customerModel.getId());
-                    if (auth_id.equals(customerModel.getId()) || auth_name.equals(customerModel.getName())) {
-                        Log.e("customer_id", customerModel.getId());
-                        customerModel_Nav = customerModel;
-
-                        tv_username.setText(customerModel_Nav.getName());
-                        break;
-                    }
-                }
-            } catch (Exception e) {
-                Log.e("Json error : ", e.toString());
-            }
-        }
-
-        @Override
-        protected String doInBackground(String... strings) {
-            String result = "";
-
-            try {
-                URL url = new URL(strings[0]);
-                HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                con.setRequestMethod("GET");
-                con.connect();
-                if (con.getResponseCode() == 200) {
-                    InputStream is = con.getInputStream();
-                    while (true) {
-                        int data = is.read();
-                        if (data == -1)
-                            break;
-                        else
-                            result += (char) data;
-                    }
-                }
-                con.disconnect();
-            } catch (Exception ex) {
-                Log.e("Connection Fail : ", ex.toString());
-            }
-            return result;
-        }
     }
-
-    private void getData(final String urlloaddata) {
-        final RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest request = new StringRequest(Request.Method.GET, urlloaddata, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-//                Log.e("All Data ::", response.toString());
-                new JsonRequestData().execute(urlloaddata);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("Error ::", error.toString());
-            }
-        });
-        requestQueue.add(request);
-    }
-
-        public void toUploadProfilePhoto(){
-
-            Intent intent = new Intent(NavigationDrawer_Activity.this, ChangeProfilePhotoActivity.class);
-
-
-            startActivityForResult(intent, 1);
-
-        }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

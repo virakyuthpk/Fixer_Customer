@@ -74,8 +74,8 @@
                     android:orientation="horizontal">
 
                     <RadioButton
-                        android:checked="true"
                         android:id="@+id/radio_male"
+                        android:checked="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:buttonTint="@color/textColorwhite"
