@@ -241,22 +241,22 @@ public class ChangeProfilePhotoActivity extends AppCompatActivity {
         //Adding request to the queue
         requestQueue.add(stringRequest);
 
-        stringRequest.setRetryPolicy(new RetryPolicy() {
-            @Override
-            public int getCurrentTimeout() {
-                return 50000;
-            }
-
-            @Override
-            public int getCurrentRetryCount() {
-                return 50000;
-            }
-
-            @Override
-            public void retry(VolleyError error) throws VolleyError {
-
-            }
-        });
+//        stringRequest.setRetryPolicy(new RetryPolicy() {
+//            @Override
+//            public int getCurrentTimeout() {
+//                return 50000;
+//            }
+//
+//            @Override
+//            public int getCurrentRetryCount() {
+//                return 50000;
+//            }
+//
+//            @Override
+//            public void retry(VolleyError error) throws VolleyError {
+//
+//            }
+//        });
 
 
 }
