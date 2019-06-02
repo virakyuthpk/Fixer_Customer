@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
@@ -26,9 +27,11 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.fixer.model.CustomerModel;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,11 +39,18 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ChangeProfilePhotoActivity extends AppCompatActivity {
 
     private static final int RC_PIC_CODE = 10;
-    Intent intent;
+
     Button btnOK , btnCancel;
     ImageView imgCamera;
     ImageView imgGallery;
@@ -51,6 +61,7 @@ public class ChangeProfilePhotoActivity extends AppCompatActivity {
     private String UPLOAD_URL = LoginActivity.getRoot()+"/api/customer/changeprofilephoto";
     Bitmap bitmaprofile;
 
+    File f;
 
 
     @Override
@@ -58,13 +69,13 @@ public class ChangeProfilePhotoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cameraprofile_activity);
 
-        intent =getIntent();
 
-        btnOK= (Button) findViewById(R.id.btn_ok);
-        btnCancel= (Button) findViewById(R.id.btn_cancel);
-        imgCamera = (ImageView) findViewById(R.id.img_camera);
-        imgGallery = (ImageView) findViewById(R.id.img_gallery);
-        imgInfo = (CircleImageView) findViewById(R.id.img_info);
+
+        btnOK= findViewById(R.id.btn_ok);
+        btnCancel= findViewById(R.id.btn_cancel);
+        imgCamera = findViewById(R.id.img_camera);
+        imgGallery = findViewById(R.id.img_gallery);
+        imgInfo = findViewById(R.id.img_info);
 
 
 
@@ -91,7 +102,8 @@ public class ChangeProfilePhotoActivity extends AppCompatActivity {
         btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadImage();
+
+                toHomeWithPhoto();
 
             }
         });
@@ -100,15 +112,26 @@ public class ChangeProfilePhotoActivity extends AppCompatActivity {
     }
 
 
-
     private void toHome(){
-        imgInfo.buildDrawingCache();
-        Bitmap bitmap = imgInfo.getDrawingCache(); // your bitmap
-        ByteArrayOutputStream _bs = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 50, _bs);
-        intent.putExtra("byteArray", _bs.toByteArray());
 
-        setResult(2,intent);
+
+        finish();
+
+    }
+
+
+
+
+    private void toHomeWithPhoto(){
+
+        Intent intent = getIntent();
+//        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//        bitmaprofile.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//        byte[] byteArray = stream.toByteArray();
+
+        intent.putExtra("image",bitmaprofile);
+
+        setResult(5,intent);
         finish();
 
     }
@@ -164,6 +187,7 @@ public class ChangeProfilePhotoActivity extends AppCompatActivity {
                         bitmaprofile = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
                         imgInfo.setImageBitmap(bitmaprofile);
 
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -176,6 +200,7 @@ public class ChangeProfilePhotoActivity extends AppCompatActivity {
 
                     bitmaprofile = (Bitmap) data.getExtras().get("data");
                     imgInfo.setImageBitmap(bitmaprofile);
+
 
                     break;
 
@@ -191,77 +216,135 @@ public class ChangeProfilePhotoActivity extends AppCompatActivity {
         return encodedImage;
     }
 
-    private void uploadImage() {
-        //Showing the progress dialog
-        final ProgressDialog loading = ProgressDialog.show(this,"Uploading...","Please wait...",false,false);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST,UPLOAD_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String s) {
-                        //Disimissing the progress dialog
-                        loading.dismiss();
-                        //Showing toast message of the response
-                        Toast.makeText(ChangeProfilePhotoActivity.this, KEY_IMAGE , Toast.LENGTH_LONG).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        //Dismissing the progress dialog
-                        loading.dismiss();
-
-                        //Showing toast
-                        Toast.makeText(ChangeProfilePhotoActivity.this, volleyError.toString(), Toast.LENGTH_LONG).show();
-                    }
-                }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                //Converting Bitmap to String
-                String image = getStringImage(bitmaprofile);
-
-
-                //Getting Image Name
-                String name = "chanthu";
-
-                //Creating parameters
-                Map<String,String> params = new Hashtable<String, String>();
-
-                //Adding parameters
-                params.put(KEY_IMAGE, image);
-                params.put(KEY_NAME, name);
-
-                //returning parameters
-                return params;
-            }
-        };
-
-        //Creating a Request Queue
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-
-        //Adding request to the queue
-        requestQueue.add(stringRequest);
-
-//        stringRequest.setRetryPolicy(new RetryPolicy() {
+//    private void uploadImage() {
+//        //Showing the progress dialog
+//        final ProgressDialog loading = ProgressDialog.show(this,"Uploading...","Please wait...",false,false);
+//        StringRequest stringRequest = new StringRequest(Request.Method.POST,UPLOAD_URL,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String s) {
+//                        //Disimissing the progress dialog
+//                        loading.dismiss();
+//                        //Showing toast message of the response
+//                        Toast.makeText(ChangeProfilePhotoActivity.this, KEY_IMAGE , Toast.LENGTH_LONG).show();
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError volleyError) {
+//                        //Dismissing the progress dialog
+//                        loading.dismiss();
+//
+//                        //Showing toast
+//                        Toast.makeText(ChangeProfilePhotoActivity.this, volleyError.toString(), Toast.LENGTH_LONG).show();
+//                    }
+//                }){
 //            @Override
-//            public int getCurrentTimeout() {
-//                return 50000;
+//            protected Map<String, String> getParams() throws AuthFailureError {
+//                //Converting Bitmap to String
+//                String image = getStringImage(bitmaprofile);
+//
+//
+//                //Getting Image Name
+//                String name = "chanthu";
+//
+//                //Creating parameters
+//                Map<String,String> params = new Hashtable<String, String>();
+//
+//                //Adding parameters
+//                params.put(KEY_IMAGE, image);
+//                params.put(KEY_NAME, name);
+//
+//                //returning parameters
+//                return params;
+//            }
+//        };
+//
+//        //Creating a Request Queue
+//        RequestQueue requestQueue = Volley.newRequestQueue(this);
+//
+//        //Adding request to the queue
+//        requestQueue.add(stringRequest);
+//
+////        stringRequest.setRetryPolicy(new RetryPolicy() {
+////            @Override
+////            public int getCurrentTimeout() {
+////                return 50000;
+////            }
+////
+////            @Override
+////            public int getCurrentRetryCount() {
+////                return 50000;
+////            }
+////
+////            @Override
+////            public void retry(VolleyError error) throws VolleyError {
+////
+////            }
+////        });
+//
+//
+//        }
+//
+//
+//    //    Convert from bitmap picture
+//    public void convertBitToBite(Bitmap bp) throws IOException {
+//        f = new File(getCacheDir(),"imageToUpload");
+//        f.createNewFile();
+//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//        bp.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
+//        byte[] bitmapData=byteArrayOutputStream.toByteArray();
+//
+//        FileOutputStream fileOutputStream = new FileOutputStream(f);
+//        fileOutputStream.write(bitmapData);
+//        fileOutputStream.flush();
+//        fileOutputStream.close();
+//
+//    }
+//
+//    public void changeProfile() throws IOException {
+//        convertBitToBite(bitmaprofile);
+//
+//        MultipartBody.Part body=null;
+//
+//        RequestBody methodPart = RequestBody.create(MultipartBody.FORM, "PATCH");
+//
+//        if (f != null){
+//            RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), f);
+//            body = MultipartBody.Part.createFormData("image","fileAndroid", reqFile);
+//        }
+//
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl(UPLOAD_URL)
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+//
+//
+//        ModelApi modelApi = retrofit.create(ModelApi.class);
+//
+//        Call<CustomerModel> call = modelApi.updateProfilePicture(body,methodPart);
+//
+//        call.enqueue(new Callback<CustomerModel>() {
+//
+//            @Override
+//            public void onResponse(Call<CustomerModel> call, retrofit2.Response<CustomerModel> response) {
+//                if (!response.isSuccessful()){
+//                    Log.w("Upload Profile:: ",response.code()+""+response.message());
+//                    return;
+//                }
+//                CustomerModel userResponce = response.body();
+//
+//                Log.w("Upload Profile:: ","Successfully "+response);
+//                Toast.makeText(getApplicationContext(),"Update Profile successfully",Toast.LENGTH_SHORT).show();
+//
 //            }
 //
 //            @Override
-//            public int getCurrentRetryCount() {
-//                return 50000;
-//            }
-//
-//            @Override
-//            public void retry(VolleyError error) throws VolleyError {
-//
+//            public void onFailure(Call<CustomerModel> call, Throwable t) {
+//                Log.w("Upload Profile fail::","Fail "+t.getMessage());
 //            }
 //        });
-
-
-}
-
-
+//    }
 
 
 

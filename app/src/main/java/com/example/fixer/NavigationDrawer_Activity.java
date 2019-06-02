@@ -77,8 +77,11 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.Inet4Address;
 import java.net.URL;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class NavigationDrawer_Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -93,7 +96,8 @@ public class NavigationDrawer_Activity extends AppCompatActivity
     NavigationView navigationView;
     View viewHeader;
     ImageView imgCamera;
-    ImageView imgProgile;
+    CircleImageView imgProfile;
+
 
 
     Dialog dialog;
@@ -130,7 +134,7 @@ public class NavigationDrawer_Activity extends AppCompatActivity
         viewHeader = navigationView.getHeaderView(0);
 
         imgCamera = (ImageView) viewHeader.findViewById(R.id.img_uploadprofile);
-        imgProgile = (ImageView) viewHeader.findViewById(R.id.profile_image);
+        imgProfile =  viewHeader.findViewById(R.id.profile_image);
 
         imgCamera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -520,23 +524,21 @@ public class NavigationDrawer_Activity extends AppCompatActivity
         requestQueue.add(request);
     }
 
-        public void toUploadProfilePhoto(){
-
-            Intent intent = new Intent(NavigationDrawer_Activity.this, ChangeProfilePhotoActivity.class);
-
-
-            startActivityForResult(intent, 1);
-
-        }
+    public void toUploadProfilePhoto(){
+        Intent intent = new Intent(NavigationDrawer_Activity.this, ChangeProfilePhotoActivity.class);
+        startActivityForResult(intent, 1);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(getIntent().hasExtra("byteArray")) {
-            ImageView _imv= new ImageView(this);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(getIntent().getByteArrayExtra("byteArray"),0,getIntent().getByteArrayExtra("byteArray").length);
-            imgProgile.setImageBitmap(bitmap);
-            Log.e("Sam","Mor bat");
+        if(resultCode==5) {
+//            Intent intent = getIntent();
+//            byte[] byteArray = getIntent().getByteArrayExtra("image");
+//            Bitmap bitmapProfile = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+            Bitmap bitmapProfile = (Bitmap) data.getParcelableExtra("image");
+//            Log.e("Sam",);
+            imgProfile.setImageBitmap(bitmapProfile);
         }
 
     }
